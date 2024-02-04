@@ -15,23 +15,44 @@ let buttonSubmit = document.getElementById("payFine");
 let DB = data.finesData;
 
 
-/**
-Вам необхідно реалізувати наступний функціонал.
-Зробити валідацію до всіх полів
-1. Номер та сума повинні бути однакові як в існуючого штрафу - якщо ні видавати
-alert "Номер не співпадає" або "Сума не співпадає"
+buttonSubmit.addEventListener('click', payFine);
 
-2. Паспортні дані у форматі - перші дві літери укр алфавіту, та 6 цифр.
-Якщо не співпадає то видавати alert "Не вірний паспортний номер"
+function payFine() {
+    // Валідація номера та суми
+    let selectedFine = DB.find(fine => fine.номер === fineNumber.value && fine.сума === parseFloat(amount.value));
+    if (!selectedFine) {
+        alert("Номер не співпадає або сума не співпадає");
+        return;
+    }
 
-3. Номер кредитної карки 16 цифр -
-якщо не співпадає то видавати alert "Не вірна кредитна картка"
+    // Валідація паспортних даних
+    let passportRegex = /^[А-Яа-я]{2}\d{6}$/;
+    if (!passportRegex.test(passport.value)) {
+        alert("Не вірний паспортний номер");
+        return;
+    }
 
-4. cvv 3 цифри - якщо не співпадає то видавати alert "Не вірний cvv".
+    // Валідація номера кредитної карти
+    let creditCardRegex = /^\d{16}$/;
+    if (!creditCardRegex.test(creditCardNumber.value)) {
+        alert("Не вірна кредитна картка");
+        return;
+    }
 
-Якщо валідація проходить успішно, то виконати оплату,
- тобто вам потрібно видалити обєкт з DB
- */
+    // Валідація CVV
+    let cvvRegex = /^\d{3}$/;
+    if (!cvvRegex.test(cvv.value)) {
+        alert("Не вірний CVV");
+        return;
+    }
+
+    // Якщо валідація пройшла успішно, видаляємо об'єкт з DB
+    let index = DB.indexOf(selectedFine);
+    if (index !== -1) {
+        DB.splice(index, 1);
+        alert("Оплата успішно виконана!");
+    }
+}
 buttonSubmit.addEventListener('click',payFine);
 function payFine(){
 

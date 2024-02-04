@@ -7,17 +7,29 @@ window.fineList = {
 let DB = data.finesData;
 
 function searchFines(searchKey){
-    /*
-     Напишіть свій код тут!
-     Як ви бачите функція повертає статичні дані.
-     Замість масиву який прописаний хардкодом, вам необхідно реалізувати цю функцію
-     так, щоб вона повертала масив відповідно переданому значенню в функцію.
-     Саме значення - це "Пошук за номером" або "Пошук за типом штрафу"
-     Тип штрафу може бути тільки
-     - Перевищення швидкості
-     - Невірне паркування
-     - Їзда у не тверезому стані
-     */
+
+     window.fineList = {
+        searchFines: searchFines
+    };
+    
+    let DB = data.finesData;
+    
+    function searchFines(searchKey) {
+        let result = [];
+    
+        if (searchKey === "Пошук за номером" || searchKey === "Пошук за типом штрафу") {
+            // Filter fines 
+            result = DB.filter(fine => {
+                if (searchKey === "Пошук за номером") {
+                    return fine.номер === '001';
+                } else if (searchKey === "Пошук за типом штрафу") {
+                    return fine.тип === 'Перевищення швидкості';
+                }
+            });
+        }
+    
+        return result;
+    }
 
 
     return [
